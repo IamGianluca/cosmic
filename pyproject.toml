@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "cosmic"
+version = "0.1.0"
+description = ""
+authors = ["Gianluca Rossi <gr.gianlucarossi@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^19.10b0"
+pytype = {version = "^2020.2.20", python = ">=3.7,<3.8"}
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
