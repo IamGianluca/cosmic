@@ -21,9 +21,7 @@ class OrderLine:
         self.id = uuid4()
 
     def __eq__(self, other):
-        if self.id == other.id:
-            return True
-        return False
+        return self.id == other.id
 
 
 class Order:
