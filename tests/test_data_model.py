@@ -1,5 +1,6 @@
 import pytest
 
+from uuid import UUID
 from cosmic.base import Customer, Order, OrderLine, Product
 
 
@@ -30,7 +31,7 @@ def test_product(product_name):
 
     # then
     assert product.name == product_name
-    assert product.sku == 1  # TODO: we should increment this
+    assert isinstance(product.sku, UUID)
 
 
 def test_customer():

@@ -6,7 +6,7 @@ from typing import List, Tuple
 class Product:
     def __init__(self, name: str):
         self.name = name
-        self.sku = 1
+        self.sku = uuid4()
 
 
 class Customer:
