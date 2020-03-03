@@ -1,6 +1,7 @@
+from uuid import UUID
+
 import pytest
 
-from uuid import UUID
 from cosmic.base import Customer, Order, OrderLine, Product
 
 

@@ -1,6 +1,6 @@
 import pytest
 
-from cosmic.base import Product, Customer
+from cosmic.base import Customer, Product
 
 
 @pytest.fixture
