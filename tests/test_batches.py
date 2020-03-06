@@ -1,5 +1,6 @@
 from datetime import date
 
+from copy import deepcopy
 import pytest
 
 from cosmic.model import Batch, OrderLine
@@ -88,3 +89,35 @@ def test_allocation_is_idempotent():
 
     batch.allocate(line)
     assert batch.available_quantity == 18
+
+
+def test_identity_equality():
+    """A Batch is an entity, which means that it has identity equality. As
+    long as the `reference` in the two Batches is the same, we say that they
+    the same thing.
+    """
+    # given
+    batch, line = make_batch_and_line(
+        sku="LARGE-TELEVISION", batch_qty=10, line_qty=2
+    )
+    copy = deepcopy(batch)  # NOTE: this is just a hack to prove our point
+
+    # when
+    batch.allocate(line)
+
+    # then
+    assert batch == copy
+    assert batch.available_quantity == 8
+    assert copy.available_quantity == 10
+
+
+def test_batch_hash():
+    # given
+    reference = "order174"
+    batch = Batch(ref=reference, sku="LOUD-STEREO", qty=19, eta=date.today())
+
+    # when
+    actual = hash(batch)
+
+    # then
+    assert actual == hash(reference)

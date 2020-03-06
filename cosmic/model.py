@@ -13,7 +13,7 @@ class OrderLine:
 
 class Batch:
     def __init__(self, ref: str, sku: str, qty: int, eta: Optional[date]):
-        self.ref = ref
+        self.reference = ref
         self.sku = sku
         self.eta = eta
         self._purchased_quantity = qty
@@ -37,3 +37,11 @@ class Batch:
 
     def can_allocate(self, line: OrderLine) -> bool:
         return self.sku == line.sku and self.available_quantity >= line.qty
+
+    def __eq__(self, other):
+        if not isinstance(other, Batch):
+            return False
+        return other.reference == self.reference
+
+    def __hash__(self):
+        return hash(self.reference)
