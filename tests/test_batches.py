@@ -1,6 +1,6 @@
+from copy import deepcopy
 from datetime import date
 
-from copy import deepcopy
 import pytest
 
 from cosmic.model import Batch, OrderLine
