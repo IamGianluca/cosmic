@@ -8,9 +8,9 @@ class OutOfStock(Exception):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass(unsafe_hash=True)
 class OrderLine:
-    order_id: str
+    orderid: str
     sku: str
     qty: int
 
@@ -22,6 +22,24 @@ class Batch:
         self.eta = eta
         self._purchased_quantity = qty
         self._allocations: Set[OrderLine] = set()
+
+    def __repr__(self):
+        return f"<Batch {self.reference}>"
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Batch):
+            return False
+        return other.reference == self.reference
+
+    def __gt__(self, other) -> bool:
+        if self.eta is None:
+            return False
+        if other.eta is None:
+            return True
+        return self.eta > other.eta
+
+    def __hash__(self):
+        return hash(self.reference)
 
     def allocate(self, line: OrderLine):
         if self.can_allocate(line):
@@ -41,21 +59,6 @@ class Batch:
 
     def can_allocate(self, line: OrderLine) -> bool:
         return self.sku == line.sku and self.available_quantity >= line.qty
-
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, Batch):
-            return False
-        return other.reference == self.reference
-
-    def __gt__(self, other) -> bool:
-        if self.eta is None:
-            return False
-        if other.eta is None:
-            return True
-        return self.eta > other.eta
-
-    def __hash__(self):
-        return hash(self.reference)
 
 
 def allocate(line: OrderLine, batches: List[Batch]) -> str:

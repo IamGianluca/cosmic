@@ -3,3 +3,4 @@
 .pytype
 .coverage
 __pycache__
+*.egg-info
