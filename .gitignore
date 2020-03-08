@@ -1,5 +1,5 @@
 .venv
 .vim
 .pytype
-
+.coverage
 __pycache__

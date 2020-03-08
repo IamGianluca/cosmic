@@ -1,6 +1,6 @@
 test:
 	pytype cosmic/ tests/ && \
-	pytest -s .
+	pytest -s . --cov cosmic --cov-report term-missing
 
 format:
 	isort -rc . && \
