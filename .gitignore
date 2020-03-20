@@ -1,6 +1,7 @@
 .venv
 .vim
 .pytype
+.mypy_cache
 .coverage
 __pycache__
 *.egg-info
