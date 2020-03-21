@@ -14,5 +14,5 @@ RUN poetry install --no-dev
 
 RUN apk del --no-cache .build-deps
 
-ENV FLASK_APP=cosmic/flask_app.py FLASK_DEBUG=1 PYTHONUNBUFFERED=1
+ENV FLASK_APP=cosmic/entrypoints/flask_app.py FLASK_DEBUG=1 PYTHONUNBUFFERED=1
 CMD poetry run flask run --host=0.0.0.0 --port=80

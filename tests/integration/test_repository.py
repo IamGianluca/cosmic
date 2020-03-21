@@ -1,5 +1,20 @@
-from cosmic.model import Batch, OrderLine
-from cosmic.repository import SqlAlchemyRepository
+from cosmic.adapters import repository
+from cosmic.domain import model
+
+
+def test_repository_can_save_a_batch(session):
+    batch = model.Batch("batch1", "RUSTY-SOAPDISH", 100, eta=None)
+
+    repo = repository.SqlAlchemyRepository(session)
+    repo.add(batch)
+    session.commit()
+
+    rows = list(
+        session.execute(
+            'SELECT reference, sku, _purchased_quantity, eta FROM "batches"'
+        )
+    )
+    assert rows == [("batch1", "RUSTY-SOAPDISH", 100, None)]
 
 
 def insert_order_line(session):
@@ -41,31 +56,13 @@ def test_repository_can_retrieve_a_batch_with_allocations(session):
     insert_batch(session, "batch2")
     insert_allocation(session, orderline_id, batch1_id)
 
-    repo = SqlAlchemyRepository(session)
+    repo = repository.SqlAlchemyRepository(session)
     retrieved = repo.get("batch1")
 
-    expected = Batch("batch1", "GENERIC-SOFA", 100, eta=None)
-    assert retrieved == expected
+    expected = model.Batch("batch1", "GENERIC-SOFA", 100, eta=None)
+    assert retrieved == expected  # Batch.__eq__ only compares reference
     assert retrieved.sku == expected.sku
     assert retrieved._purchased_quantity == expected._purchased_quantity
     assert retrieved._allocations == {
-        OrderLine("order1", "GENERIC-SOFA", 12),
+        model.OrderLine("order1", "GENERIC-SOFA", 12),
     }
-
-
-def test_repository_can_save_a_batch(session):
-    # given
-    batch = Batch("batch1", "RUSTY-SOAPDISH", qty=100, eta=None)
-    repo = SqlAlchemyRepository(session)
-
-    # when
-    repo.add(batch)
-    session.commit()
-    actual = list(
-        session.execute(
-            'SELECT reference, sku, _purchased_quantity, eta FROM "batches"'
-        )
-    )
-
-    # then
-    assert actual == [("batch1", "RUSTY-SOAPDISH", 100, None)]

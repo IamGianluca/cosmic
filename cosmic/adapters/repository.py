@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from cosmic.model import Batch
+from cosmic.domain.model import Batch
 
 
 class AbstractRepository(ABC):
@@ -11,6 +11,10 @@ class AbstractRepository(ABC):
 
     @abstractmethod
     def get(self, reference: str) -> Batch:
+        raise NotImplementedError  # pragma: no cover
+
+    @abstractmethod
+    def list(self) -> List[Batch]:
         raise NotImplementedError  # pragma: no cover
 
 

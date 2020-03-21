@@ -9,7 +9,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import mapper, relationship
 
-from cosmic.model import Batch, OrderLine
+from cosmic.domain.model import Batch, OrderLine
 
 metadata = MetaData()
 
